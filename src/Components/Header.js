@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import {IoIosContacts} from 'react-icons/io'
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
     <Container>
         <Wrapper>
             <IoIosContacts size={'3rem'}/>
-            <Span>CodeLab Set 05 PhoneBook</Span>
+            <Span to='/'>CodeLab Set 05 PhoneBook</Span>
         </Wrapper>
     </Container>
   )
@@ -28,10 +29,14 @@ const Wrapper = styled.div`
     width: 80%;
     justify-content: center;
 `;
-const Span = styled.div`
+const Span = styled(Link)`
     font-size: 2rem;
     font-family: 'Lobster';
     margin-left: 10px;
     text-decoration: none;
     color: #fff;
+
+    @media screen and (max-width: 500px){
+        font-size: 1.4rem;
+    }
 `;

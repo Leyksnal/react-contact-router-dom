@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styled, {keyframes} from 'styled-components'
 
 export default function Home() {
@@ -9,7 +10,7 @@ export default function Home() {
             <input type="text" placeholder='name' />
             <input type="text" placeholder='company' />
             <input type="number" placeholder='phone +234' />
-            <Button>Confirm</Button>
+            <Button to='/phonebook'>Confirm</Button>
         </Wrapper>
     </Container>
   )
@@ -26,8 +27,8 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 50px;
-    
+    margin-top: 100px;
+    font-family: 'poppins';
 `;
 
 const Wrapper = styled.div`
@@ -49,15 +50,23 @@ const Wrapper = styled.div`
         border: none;
         padding-left: 15px;
     }
+
+    @media screen and (max-width: 500px){
+        width: 90%;
+    }
 `;
 const Title = styled.div`
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: 500;
 `;
-const Button = styled.button`
+
+const Button = styled(Link)`
+    text-decoration: none;
     width: 150px;
     height: 50px;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1.2rem;
     font-weight: 600;
     border-radius: 10px;
