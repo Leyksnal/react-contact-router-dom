@@ -1,34 +1,73 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {IoIosContact} from 'react-icons/io'
 import {TiLinkOutline} from 'react-icons/ti'
 import {BsFillTelephoneFill} from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { collection, getDocs, onSnapshot } from 'firebase/firestore'
+import { database } from './Base'
 
 export default function View() {
+
+    const [base, setBase] = useState([])
+
+    const catchData = async () =>{
+        const data = collection(database, "contacts")
+        onSnapshot(data, (snapshot) =>{
+            const r = []
+            snapshot.forEach((doc) =>{
+                r.push({...doc.data(), id: doc.id})
+            })
+            setBase(r)
+        })
+    }
+
+    useEffect(() =>{
+        catchData()
+    }, [])
+
   return (
-    <Container>
-        <Wrapper>
-            <Cirle><span>B</span></Cirle>
-            <Info>
-                <User><IoIosContact size={'3rem'}/></User>
-                <Name> <strong> <IoIosContact/> Name:</strong> <span>Bello Leke</span></Name>
-                <Company><strong><TiLinkOutline/>Company:</strong> <span>SpaceHunt</span></Company>
-                <Phone><strong><BsFillTelephoneFill/>Phone:</strong><span>08082858980</span></Phone>
-            </Info>
-        </Wrapper>
+      <Wall>
+        <Container>
+            {base?.map((props) =>{
+                return (
+                    <Wrapper key={props.id}>
+                        <Cirle><span>B</span></Cirle>
+                        <Info>
+                            <User><IoIosContact size={'3rem'}/></User>
+                            <Name> <strong> <IoIosContact/> Name:</strong> <span>{props.name}</span></Name>
+                            <Company><strong><TiLinkOutline/>Company:</strong> <span>{props.company}</span></Company>
+                            <Phone><strong><BsFillTelephoneFill/>Phone:</strong><span>{props.number}</span></Phone>
+                        </Info>
+                    </Wrapper>  
+                )
+            })}
+        </Container>
         <Button to='/'>Back</Button>
-    </Container>
+      </Wall>
+
   )
 }
 
-const Container = styled.div`
+const Wall = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+`;
+
+const Container = styled.div`
     margin-top: 50px;
     font-family: 'poppins';
-    flex-direction: column;
-    min-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 20px;
+    width: 90%;
+
+    @media screen and (max-width: 500px){
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
 `;
 const Wrapper = styled.div`
     display: flex;
@@ -45,7 +84,6 @@ const Wrapper = styled.div`
     }
 
     @media screen and (max-width: 500px){
-        width: 80%;
         display: flex;
         flex-direction: column;
     }
@@ -151,10 +189,6 @@ const User = styled.div`
     justify-content: center;
     align-items: center;
     margin: 10px;
-
-    /* @media screen and (max-width: 500px){
-        display: none;
-    } */
 `;
 
 const Button = styled(Link)`
@@ -171,7 +205,8 @@ const Button = styled(Link)`
     background-color: transparent;
     color: #fff;
     transition: all 500ms;
-    margin-top: 20px;
+    margin: 20px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 
     :hover{
         cursor: pointer;
