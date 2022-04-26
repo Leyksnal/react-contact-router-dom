@@ -1,31 +1,30 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { addDoc, collection } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { database } from './Base'
 
-export default function Home() {
+export default function EditComp() {
+    const { id } = useParams();
+    const navigate = useNavigate()
 
     const [name, setName] = useState("")
     const [company, setCompany] = useState("")
     const [number, setNumber] = useState("")
 
-    const postContact = ()=>{
-        addDoc(collection(database, "contacts"), {
+    const editContact = async()=>{
+        await updateDoc(doc(database, "contacts", id), {
             name,
             company,
             number
         })
-        setName("")
-        setCompany("")
-        setNumber("")
+        navigate("/")
     }
 
   return (
     <Container>
-        <Action to='/phonebook'>All Contacts</Action>
         <Wrapper>
-            <Title>Add PhoneBook</Title>
+            <Title>Edit phoneBook here</Title>
             <input type="text" placeholder='name' value={name} onChange={(e) =>{
                 setName(e.target.value)
             }} />
@@ -35,7 +34,7 @@ export default function Home() {
             <input type="number" placeholder='phone +234' value={number} onChange={(e) =>{
                 setNumber(e.target.value)
             }}/>
-            <Button onClick={postContact}>Confirm</Button>
+            <Button onClick={editContact}>Update</Button>
         </Wrapper>
     </Container>
   )
@@ -81,28 +80,6 @@ const Wrapper = styled.div`
 const Title = styled.div`
     font-size: 1.7rem;
     font-weight: 500;
-`;
-
-const Action = styled(Link)`
-    text-decoration: none;
-    width: 150px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    font-weight: 600;
-    border-radius: 10px;
-    border: 3px solid #3c67e3;
-    background-color: transparent;
-    color: #fff;
-    transition: all 500ms;
-
-    :hover{
-        cursor: pointer;
-        background-color: #3c67e3;
-        transform: scale(1.08);
-    }
 `;
 
 const Button = styled.button`

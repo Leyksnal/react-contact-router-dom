@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {IoIosContact} from 'react-icons/io'
+import {MdDelete} from 'react-icons/md'
+import {BiEditAlt} from 'react-icons/bi'
 import {TiLinkOutline} from 'react-icons/ti'
 import {BsFillTelephoneFill} from 'react-icons/bs'
 import { Link } from 'react-router-dom'
-import { collection, getDocs, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { database } from './Base'
 
 export default function View() {
@@ -34,10 +36,16 @@ export default function View() {
                     <Wrapper key={props.id}>
                         <Cirle><span>B</span></Cirle>
                         <Info>
-                            <User><IoIosContact size={'3rem'}/></User>
+                            <User>
+                                <IoIosContact size={'2.7rem'}/>
+                            </User>
                             <Name> <strong> <IoIosContact/> Name:</strong> <span>{props.name}</span></Name>
                             <Company><strong><TiLinkOutline/>Company:</strong> <span>{props.company}</span></Company>
                             <Phone><strong><BsFillTelephoneFill/>Phone:</strong><span>{props.number}</span></Phone>
+                            <Edit>
+                                <Boder to={`/:id${props.id}`}><BiEditAlt color='#7dff00' size={'2rem'}/></Boder>
+                                <Boder2><MdDelete color='#ff3300' size={'2rem'}/></Boder2>
+                            </Edit>
                         </Info>
                     </Wrapper>  
                 )
@@ -45,7 +53,6 @@ export default function View() {
         </Container>
         <Button to='/'>Back</Button>
       </Wall>
-
   )
 }
 
@@ -79,8 +86,7 @@ const Wrapper = styled.div`
     border-radius: 10px;
 
     :hover{
-        transform: scale(1.04);
-        cursor: pointer;
+        transform: scale(1.02);
     }
 
     @media screen and (max-width: 500px){
@@ -90,14 +96,14 @@ const Wrapper = styled.div`
 `;
 const Cirle = styled.div`
     background-color: #5ddcff;
-    width: 80px;
-    height: 80px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px;
-    margin-bottom: -50px;
+    margin-bottom: -2px;
     
 
     span{
@@ -189,6 +195,37 @@ const User = styled.div`
     justify-content: center;
     align-items: center;
     margin: 10px;
+
+    @media screen and (max-width: 500px){
+        margin-top: -10px;
+    }
+`;
+
+const Boder = styled(Link)`
+    text-decoration: none;
+    transition: all 350ms;
+        :hover{
+        cursor: pointer;
+        transform: scale(0.9);
+    }
+`;
+
+
+const Boder2 = styled.div`
+    text-decoration: none;
+    transition: all 350ms;
+        :hover{
+        cursor: pointer;
+        transform: scale(0.9);
+    }
+`;
+
+
+const Edit = styled.div`
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
 `;
 
 const Button = styled(Link)`
@@ -198,15 +235,16 @@ const Button = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
     border-radius: 10px;
     border: 3px solid #3c67e3;
     background-color: transparent;
     color: #fff;
-    transition: all 500ms;
+    transition: all 300ms;
     margin: 20px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    font-weight: 'poppins';
 
     :hover{
         cursor: pointer;
